@@ -10,12 +10,12 @@ export const createProduct = async (req, res) => {
         .status(400)
         .json({ success: false, message: "All fields are required" });
     }
-    if (price <= 0) {
+    if (price < 0) {
       return res
         .status(400)
         .json({ success: false, message: "Price must be a positive number" });
     }
-    if (stock <= 0) {
+    if (stock < 0) {
       return res
         .status(400)
         .json({ success: false, message: "stock cannot be negative" });
@@ -93,7 +93,7 @@ export const updateProduct = async (req, res) => {
   const { name, price, stock, categoryId } = req.body;
   const { id } = req.params;
   try {
-    if (price !== undefined && price <= 0) {
+    if (price !== undefined && price < 0) {
       return res
         .status(400)
         .json({ success: false, message: "Price must be a positive number" });
