@@ -11,7 +11,9 @@ export const createCategory = async (req, res) => {
         .json({ success: false, message: "Name is required" });
     }
    
-    const existingCategory = await Category.findOne({ name });
+    const existingCategory = await Category.findOne({
+        name: { $regex: `^${name}$`, $options: "i" } 
+      });
     if (existingCategory) {
       return res
         .status(400)
@@ -68,6 +70,19 @@ export const updateCategory = async (req, res) => {
   const { name, description } = req.body;
   const { id } = req.params;
   try {
+    if (name) {
+        const existingCategory = await Category.findOne({
+          name: { $regex: `^${name}$`, $options: "i" }, 
+          _id: { $ne: id }, 
+        });
+  
+        if (existingCategory) {
+          return res
+            .status(400)
+            .json({ success: false, message: "Category name already exists" });
+        }
+      }
+    
     const category = await Category.findByIdAndUpdate(
       id,
       { name, description },
