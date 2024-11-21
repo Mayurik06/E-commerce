@@ -14,7 +14,7 @@
 
 4.start the server:
 
-    node index.js
+    npm start
 
 5. Schema Design and Relationships
 1. Category Schema
